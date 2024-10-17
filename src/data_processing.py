@@ -19,7 +19,7 @@ def load_images(data_dir):
 
     return images, labels
 
-def label_encoder(labels):  # Cambié el nombre de la función
+def label_encoder(labels):
     unique_labels = np.unique(labels)
     label_to_index = {label: index for index, label in enumerate(unique_labels)}
     encoded_labels = np.array([label_to_index[label] for label in labels])  
@@ -35,15 +35,15 @@ def process_imgs(data_dir):
     imgs_train, imgs_test, labels_train, labels_test = split_data(imgs, encoded_labels)
 
     #view
-    #print ("test load")
-    #print(f"Total de imágenes cargadas: {len(imgs)}")
-    #print(f"Primeras 5 etiquetas: {labels[:5]}")
-    #print ("encoding")
-    #print(f"Etiquetas codificadas: {encoded_labels[:5]}")
-    #print(f"Diccionario de mapeo: {label_to_index}")
-    #print ("split")
-    #print(f"Tamaño de conjunto de entrenamiento: {len(imgs_train)}")
-    #print(f"Tamaño de conjunto de prueba: {len(imgs_test)}")
+    print ("test load")
+    print(f"Total de imágenes cargadas: {len(imgs)}")
+    print(f"Primeras 5 etiquetas: {labels[:5]}")
+    print ("encoding")
+    print(f"Etiquetas codificadas: {encoded_labels[:5]}")
+    print(f"Diccionario de mapeo: {label_to_index}")
+    print ("split")
+    print(f"Tamaño de conjunto de entrenamiento: {len(imgs_train)}")
+    print(f"Tamaño de conjunto de prueba: {len(imgs_test)}")
 
 
     return imgs_train, imgs_test, labels_train, labels_test, label_to_index
