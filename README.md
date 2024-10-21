@@ -11,5 +11,5 @@ este proyecto utiliza un modelo de Vision Transformer (ViT) para traducir el len
    ```bash
    pip install -r requirements.txt
 
-## Bibliogrgafia del data set
+## Bibliografia del data set
 https://github.com/Expo99/Static-Hand-Gestures-of-the-Peruvian-Sign-Language-Alphabet
