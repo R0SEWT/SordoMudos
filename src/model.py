@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import tensorflow as tf
+from tensorflow.keras.layers import Dropout
 from sklearn.model_selection import train_test_split
 from data_processing import process_imgs
 
@@ -24,6 +25,7 @@ def create_vit(num_clasess):
         
         # Aplanar la salida
         tf.keras.layers.Flatten(),  
+        Dropout(.20),
         tf.keras.layers.Dense(128, activation='relu'),
         tf.keras.layers.Dense(num_clasess, activation='softmax')
     ])
@@ -35,8 +37,6 @@ def create_vit(num_clasess):
 # Entrenamiento
 num_clasess = len(label_mapping)
 model = create_vit(num_clasess)
-
-# Ajustamos el modelo con el conjunto de entrenamiento
 try:
     model.fit(X_train, y_train, epochs=10, validation_data=(X_val, y_val))
 except Exception as e:
