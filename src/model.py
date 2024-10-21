@@ -38,13 +38,13 @@ def create_vit(num_clasess):
 # Entrenamiento
 num_clasess = len(label_mapping)
 model = create_vit(num_clasess)
-try:
-    model.fit(X_train, y_train, epochs=10, validation_data=(X_val, y_val))
-except Exception as e:
-    print("Error durante el entrenamiento:", str(e))
-    print("X_train shape:", X_train.shape)
-    print("y_train shape:", y_train.shape)
-    print("X_val shape:", X_val.shape)
-    print("y_val shape:", y_val.shape)
+#try:
+#    model.fit(X_train, y_train, epochs=10, validation_data=(X_val, y_val))
+#except Exception as e:
+#    print("Error durante el entrenamiento:", str(e))
+#    print("X_train shape:", X_train.shape)
+#    print("y_train shape:", y_train.shape)
+#    print("X_val shape:", X_val.shape)
+#    print("y_val shape:", y_val.shape)
 
 
