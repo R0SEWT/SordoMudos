@@ -1,8 +1,9 @@
 import os
 import numpy as np
+import cv2
 from sklearn.model_selection import train_test_split
 
-def load_images(data_dir):
+def load_images(data_dir, target_size=(224,224)):
     images = []
     labels = []
     
@@ -14,7 +15,9 @@ def load_images(data_dir):
                 img_path = os.path.join(label_dir, img_file)
                 # Solo carga archivos de imagen
                 if img_file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
-                    images.append(img_path)
+                    img=cv2.imread(img_path)
+                    img=cv2.resize(img, target_size)
+                    images.append(img)
                     labels.append(label)
 
     return images, labels
@@ -50,11 +53,15 @@ def split_data_by_label(imgs, labels, test_size=0.2, random_st=42):
         print(f"Letra '{label}': {len(labels_test_label)} elementos prueba")
 
     return imgs_train, imgs_test, labels_train, labels_test
-
 def process_imgs(data_dir):
     imgs, labels = load_images(data_dir)
     encoded_labels, label_to_index = label_encoder(labels)  
     imgs_train, imgs_test, labels_train, labels_test = split_data_by_label(imgs, encoded_labels)
+    imgs_train = np.array(imgs_train)
+    imgs_test = np.array(imgs_test)
+    labels_train = np.array(labels_train)
+    labels_test = np.array(labels_test)
+
     return imgs_train, imgs_test, labels_train, labels_test, label_to_index
 
 data_directory = os.path.join(os.path.dirname(__file__), '..', 'Static-Hand-Gestures-of-the-Peruvian-Sign-Language-Alphabet')
