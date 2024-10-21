@@ -1,8 +1,16 @@
 import os
 import cv2
 import numpy as np
+from sklearn.model_selection import train_test_split
 
-def data_augmented(image, target_size=(224, 224)):
+def save_image(image, label, img_name, output_dir, target_size=(224, 224)):
+    label_dir = os.path.join(output_dir, label)
+    os.makedirs(label_dir, exist_ok=True)  
+    img_path = os.path.join(label_dir, img_name)
+    resized_img = cv2.resize(image, target_size)  
+    cv2.imwrite(img_path, resized_img)
+
+def data_augmented(image, label, img_base_name, output_dir, target_size=(224, 224)):
     augmented_imgs = []
 
     # Aplicamos la rotación aleatoria
@@ -10,24 +18,27 @@ def data_augmented(image, target_size=(224, 224)):
     h, w = image.shape[:2]
     M = cv2.getRotationMatrix2D((w // 2, h // 2), angle, 1.0)
     rotated_img = cv2.warpAffine(image, M, (w, h))
-    rotated_img = cv2.resize(rotated_img, target_size)  # Redimensionar
+    rotated_img = cv2.resize(rotated_img, target_size)  
     augmented_imgs.append(rotated_img)
+    save_image(rotated_img, label, img_base_name + "_r.jpg", output_dir)
 
     # Escalamiento de las imágenes
     scale = np.random.uniform(0.8, 1.2)
     scaled_image = cv2.resize(image, None, fx=scale, fy=scale)
-    scaled_image = cv2.resize(scaled_image, target_size)  # Redimensionar
+    scaled_image = cv2.resize(scaled_image, target_size) 
     augmented_imgs.append(scaled_image)
+    save_image(scaled_image, label, img_base_name + "_s.jpg", output_dir)
 
     # Ajuste de brillo aleatorio
     bright = np.random.randint(-50, 50)
     bright_img = cv2.convertScaleAbs(image, alpha=1, beta=bright)
-    bright_img = cv2.resize(bright_img, target_size)  # Redimensionar
+    bright_img = cv2.resize(bright_img, target_size)  
     augmented_imgs.append(bright_img)
+    save_image(bright_img, label, img_base_name + "_b.jpg", output_dir)
 
     return augmented_imgs
 
-def load_images(data_dir, target_size=(224, 224)):
+def load_images(data_dir, output_dir=os.path.join(os.path.dirname(__file__), '..', 'generated_images'), target_size=(224, 224)):
     images = []
     labels = []
 
@@ -42,14 +53,21 @@ def load_images(data_dir, target_size=(224, 224)):
                     img = cv2.imread(img_path)
                     img = cv2.resize(img, target_size)
 
-                    # Agregamos imágenes originales
+                    # Agregamos la imagen original a la memoria
                     images.append(img)
                     labels.append(label)
 
-                    # Generamos 3 imágenes aumentadas
-                    augmented_imgs = data_augmented(img, target_size)
-                    for aug_img in augmented_imgs:
-                        images.append(aug_img)
-                        labels.append(label)
+                    # Guardamos la imagen original en el directorio generado
+                    img_base_name = os.path.splitext(img_file)[0]
+                    save_image(img, label, img_base_name + "_original.jpg", output_dir)
 
+                    # Generamos 3 imágenes aumentadas y las guardamos
+                    augmented_imgs = data_augmented(img, label, img_base_name, output_dir)
+
+                    # Agregamos las imágenes aumentadas al conjunto
+                    for aug_img in augmented_imgs:
+                        images.append(aug_img)  
+                        labels.append(label)    
     return images, labels
+
+
