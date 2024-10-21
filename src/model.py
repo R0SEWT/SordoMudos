@@ -22,10 +22,11 @@ def create_vit(num_clasess):
         tf.keras.layers.MaxPooling2D(pool_size=(2, 2)), 
         tf.keras.layers.Conv2D(64, (3, 3), activation='relu'), 
         tf.keras.layers.MaxPooling2D(pool_size=(2, 2)), 
-        
+        tf.keras.layers.Conv2D(128, (3, 3), activation='relu'), 
+        tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),         
         # Aplanar la salida
         tf.keras.layers.Flatten(),  
-        Dropout(.20),
+        Dropout(.30),
         tf.keras.layers.Dense(128, activation='relu'),
         tf.keras.layers.Dense(num_clasess, activation='softmax')
     ])
@@ -38,13 +39,14 @@ def create_vit(num_clasess):
 # Entrenamiento
 num_clasess = len(label_mapping)
 model = create_vit(num_clasess)
-#try:
-#    model.fit(X_train, y_train, epochs=10, validation_data=(X_val, y_val))
-#except Exception as e:
-#    print("Error durante el entrenamiento:", str(e))
-#    print("X_train shape:", X_train.shape)
-#    print("y_train shape:", y_train.shape)
-#    print("X_val shape:", X_val.shape)
-#    print("y_val shape:", y_val.shape)
+try:
+    model.fit(X_train, y_train, epochs=10, validation_data=(X_val, y_val))
+    model.save("el_modelinio.keras")   
+except Exception as e:
+    print("Error durante el entrenamiento:", str(e))
+    print("X_train shape:", X_train.shape)
+    print("y_train shape:", y_train.shape)
+    print("X_val shape:", X_val.shape)
+    print("y_val shape:", y_val.shape)
 
 
