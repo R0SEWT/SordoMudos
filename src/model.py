@@ -1,12 +1,5 @@
-import os
-import numpy as np
 import tensorflow as tf
 from tensorflow.keras.layers import Dropout
-from sklearn.model_selection import train_test_split
-from data_processing import process_imgs
-
-data_directory = os.path.join(os.path.dirname(__file__), '..', 'Static-Hand-Gestures-of-the-Peruvian-Sign-Language-Alphabet')
-(X_train, X_val, y_train, y_val, label_mapping) = process_imgs(data_directory)
 
 input_shape = (224, 224, 3)
 
@@ -36,17 +29,5 @@ def create_vit(num_clasess):
     model.summary()
     return model
 
-# Entrenamiento{}
-num_clasess = len(label_mapping)
-model = create_vit(num_clasess)
-try:
-    model.fit(X_train, y_train, epochs=10, validation_data=(X_val, y_val))
-    model.save("el_modelinio.keras")   
-except Exception as e:
-    print("Error durante el entrenamiento:", str(e))
-    print("X_train shape:", X_train.shape)
-    print("y_train shape:", y_train.shape)
-    print("X_val shape:", X_val.shape)
-    print("y_val shape:", y_val.shape)
 
 
