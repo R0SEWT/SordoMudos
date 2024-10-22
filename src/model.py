@@ -36,7 +36,7 @@ def create_vit(num_clasess):
     model.summary()
     return model
 
-# Entrenamiento
+# Entrenamiento{}
 num_clasess = len(label_mapping)
 model = create_vit(num_clasess)
 try:
