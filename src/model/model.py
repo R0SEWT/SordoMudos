@@ -23,6 +23,7 @@ def create_vit(num_clasess):
         tf.keras.layers.Dense(128, activation='relu'),
         tf.keras.layers.Dense(num_clasess, activation='softmax')
     ])
+    # usar GPU
     model.compile(optimizer='adam',
                   loss='sparse_categorical_crossentropy',
                   metrics=['accuracy'])

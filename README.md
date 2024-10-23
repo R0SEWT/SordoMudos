@@ -8,13 +8,21 @@ este proyecto utiliza un modelo de Vision Transformer (ViT) para traducir el len
 
 ## Instalación
 1. Clona el repositorio y el submodulo:
-```bash
-git submodule init
-git submodule update
-```
+
+2. inicializa el submodulo usando
+    ```bash
+    git submodule init
+    git submodule update
+    ```
 1. Instala las dependencias:
    ```bash
    pip install -r requirements.txt
     ```
+2. Ejecucion: 
+    ```bash
+     ../SordoMudos>python src/training/train.py
+    ```
+
+
 ## Bibliogrgafia del data set
 https://github.com/Expo99/Static-Hand-Gestures-of-the-Peruvian-Sign-Language-Alphabet

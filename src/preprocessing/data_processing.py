@@ -1,7 +1,9 @@
 import os
+import sys
 import numpy as np
 from sklearn.model_selection import train_test_split
-from data_augmentation import load_images  
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from preprocessing.data_augmentation import load_images  
 
 def label_encoder(labels):
     unique_labels = np.unique(labels)
