@@ -32,6 +32,7 @@ def predict(model,image_path):
         output=model(image_tensor)
         _, predicted_class=torch.max(output.data, 1)
     return predicted_class.item()
+
 #Funcion principal par aprobar el modelo 
 def test_model(image_path):
     num_classes=24

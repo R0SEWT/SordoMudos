@@ -1,7 +1,7 @@
 from __init__ import test_model
 
 if __name__ == '__main__':
-    image = "../images/a_valeria_2.jpg"
+    image = "../images/r_valeria_2.jpg"
     predictions = test_model(image)
 
     labels = {0: 'a', 1: 'b', 2: 'c', 3: 'd', 4: 'e', 5: 'f', 6: 'g', 7: 'h', 8: 'i', 

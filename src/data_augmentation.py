@@ -10,6 +10,12 @@ def save_image(image, label, img_name, output_dir, target_size=(224, 224)):
     resized_img = cv2.resize(image, target_size)  
     cv2.imwrite(img_path, resized_img)
 
+def add_noise(image):
+    # Generar ruido gaussiano
+    noise = np.random.normal(0, 25, image.shape).astype(np.uint8)
+    noisy_image = cv2.add(image, noise)
+    return noisy_image
+
 def data_augmented(image, label, img_base_name, output_dir, target_size=(224, 224)):
     augmented_imgs = []
 
@@ -35,13 +41,19 @@ def data_augmented(image, label, img_base_name, output_dir, target_size=(224, 22
     bright_img = cv2.resize(bright_img, target_size)  
     augmented_imgs.append(bright_img)
     save_image(bright_img, label, img_base_name + "_b.jpg", output_dir)
+    
+    # Agregar ruido a la imagen
+    noisy_image = add_noise(image)
+    noisy_image = cv2.resize(noisy_image, target_size)  
+    augmented_imgs.append(noisy_image)
+    save_image(noisy_image, label, img_base_name + "_n.jpg", output_dir)
 
     return augmented_imgs
 
 def load_images(data_dir, output_dir=os.path.join(os.path.dirname(__file__), '..', 'generated_images'), target_size=(224, 224)):
     images = []
     labels = []
-
+   
     for label in os.listdir(data_dir):
         label_dir = os.path.join(data_dir, label)
 
@@ -64,10 +76,8 @@ def load_images(data_dir, output_dir=os.path.join(os.path.dirname(__file__), '..
                     # Generamos 3 imágenes aumentadas y las guardamos
                     augmented_imgs = data_augmented(img, label, img_base_name, output_dir)
 
-                    # Agregamos las imágenes aumentadas al conjunto
-                    for aug_img in augmented_imgs:
-                        images.append(aug_img)  
-                        labels.append(label)    
+                    images.extend(augmented_imgs)
+                    labels.extend([label] * len(augmented_imgs))
     return images, labels
 
 

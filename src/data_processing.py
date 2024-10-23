@@ -2,6 +2,7 @@ import os
 import numpy as np
 from sklearn.model_selection import train_test_split
 from data_augmentation import load_images  
+import matplotlib.pyplot as plt
 
 def label_encoder(labels):
     unique_labels = np.unique(labels)
@@ -15,7 +16,6 @@ def split_data_by_label(imgs, labels, test_size=0.2, random_st=42):
     imgs_test = []
     labels_train = []
     labels_test = []
-    
     for label in unique_labels:
         imgs_of_label = [img for img, lbl in zip(imgs, labels) if lbl == label]
         labels_of_label = [lbl for lbl in labels if lbl == label]
