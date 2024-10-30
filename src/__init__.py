@@ -1,42 +1,51 @@
 import os
-import torch 
+import torch
 from torchvision import transforms
 from PIL import Image
 from model import ViTModel
+import matplotlib.pyplot as plt
 
-#configuracion de la GPU
-device=torch.device("cuda")
+# Configuración de la GPU
+device = torch.device("cuda")
 
 def load_model(weights_path, num_classes):
-    model=ViTModel(num_classes).to(device)
+    model = ViTModel(num_classes).to(device)
     model.load_state_dict(torch.load(weights_path))
     model.eval()
     return model
 
-#preprocesar de la imagen 
+# Preprocesar la imagen
 def preprocesar_image(image_path):
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # Normalize
+        transforms.Normalize(mean=[0.485], std=[0.229])  
     ])
 
-    image=Image.open(image_path).convert('RGB')
-    return transform(image).unsqueeze(0)
+    image = Image.open(image_path).convert('L')  # Convertir a escala de grises
+    return image, transform(image).unsqueeze(0)  # Retornar la imagen y el tensor
 
-#Ponemos la prediccion 
-def predict(model,image_path):
-    image_tensor=preprocesar_image(image_path)
-    image_tensor=image_tensor.to(device)
+# Mostrar la imagen
+def mostrar_imagen(imagen):
+    plt.imshow(imagen, cmap='gray')  # Usar cmap='gray' para imágenes en escala de grises
+    plt.axis('off')  # Ocultar los ejes
+    plt.show()
+
+# Ponemos la predicción
+def predict(model, image_path):
+    image, image_tensor = preprocesar_image(image_path)  # Obtener imagen y tensor
+    mostrar_imagen(image)  # Mostrar la imagen preprocesada
+    image_tensor = image_tensor.to(device)
+    
     with torch.no_grad():
-        output=model(image_tensor)
-        _, predicted_class=torch.max(output.data, 1)
+        output = model(image_tensor)
+        _, predicted_class = torch.max(output.data, 1)
     return predicted_class.item()
 
-#Funcion principal par aprobar el modelo 
+# Función principal para probar el modelo 
 def test_model(image_path):
-    num_classes=24
-    weights_path=os.path.join(os.path.dirname(__file__), '..', 'el_modelinio.pth')
-    model=load_model(weights_path, num_classes)
-    predicted_class=predict(model, image_path)
+    num_classes = 24
+    weights_path = os.path.join(os.path.dirname(__file__), 'el_modelinio.pth')
+    model = load_model(weights_path, num_classes)
+    predicted_class = predict(model, image_path)
     return predicted_class

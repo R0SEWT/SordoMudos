@@ -32,7 +32,6 @@ def save_silhouette(input_dir=os.path.join(os.path.dirname(__file__), '..', 'aug
                 # Obtener el nombre original del archivo y agregar "_s" antes de la extensión
                 name, ext = os.path.splitext(file)
                 new_name = f"{name}_s{ext}"
-
                 # Crear la estructura de carpetas en la salida
                 relative_path = os.path.relpath(root, input_dir)
                 output_path = os.path.join(output_dir, relative_path)

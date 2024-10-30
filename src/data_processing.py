@@ -32,7 +32,8 @@ def split_data_by_label(imgs, labels, test_size=0.2, random_st=42):
 
     return imgs_train, imgs_test, labels_train, labels_test
 def preprocess(data_dir):
-    imgs,labels=load_images(data_dir)
+    if not os.path.exists(os.path.join(os.path.dirname(__file__), '..','augmented_images')):
+        load_images(data_dir)
     ims_s, labels_s = save_silhouette()
     return ims_s, labels_s
 

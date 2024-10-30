@@ -8,19 +8,35 @@ from data_processing import process_imgs  # Asegúrate de tener esta función
 from model import ViTModel  # Importa tu modelo
 
 device = torch.device("cuda")
+
 def main():
-    # Cargar y procesar los datosoad_images(data_dir)
+    # Cargar y procesar los datos
     data_directory = os.path.join(os.path.dirname(__file__), '..', 'Static-Hand-Gestures-of-the-Peruvian-Sign-Language-Alphabet')
     (X_train, X_val, y_train, y_val, label_mapping) = process_imgs(data_directory)
 
     # Asegúrate de que X_train y X_val sean tensores de PyTorch con la forma correcta
-    X_train = torch.tensor(X_train, dtype=torch.float32).permute(0, 3, 1, 2)
-    y_train = torch.tensor(y_train, dtype=torch.long)  
-    X_val = torch.tensor(X_val, dtype=torch.float32).permute(0, 3, 1, 2) 
+    X_train = torch.tensor(X_train, dtype=torch.float32)
+
+    # Verifica si las imágenes son en blanco y negro (un solo canal)
+    if X_train.dim() == 3:  # Solo tiene [n, h, w]
+        X_train = X_train.unsqueeze(1)  # Agrega una dimensión para los canales: [n, 1, h, w]
+    else:
+        X_train = X_train.permute(0, 3, 1, 2)  # Si no es un solo canal, permuta para [n, c, h, w]
+
+    y_train = torch.tensor(y_train, dtype=torch.long)
+    
+    X_val = torch.tensor(X_val, dtype=torch.float32)
+
+    # Verifica si las imágenes de validación son en blanco y negro (un solo canal)
+    if X_val.dim() == 3:  # Solo tiene [n, h, w]
+        X_val = X_val.unsqueeze(1)  # Agrega una dimensión para los canales: [n, 1, h, w]
+    else:
+        X_val = X_val.permute(0, 3, 1, 2)  # Si no es un solo canal, permuta para [n, c, h, w]
+
     y_val = torch.tensor(y_val, dtype=torch.long)
 
     print(f"Tamaño de conjunto de entrenamiento: {len(X_train)}")
-    print(f"Tamaño de conjunto de prueba: {len(X_val)}")
+    print(f"Tamaño de conjunto de validación: {len(X_val)}")
     print(f"Diccionario de etiquetas: {label_mapping}")
 
     # Crear DataLoaders
@@ -92,6 +108,7 @@ def main():
         except Exception as e:
             print(f"Error durante el entrenamiento: {e}")
             break
+    
     # Guardamos el modelo
     torch.save(model.state_dict(), "el_modelinio.pth")
 
