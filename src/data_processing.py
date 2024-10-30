@@ -2,7 +2,7 @@ import os
 import numpy as np
 from sklearn.model_selection import train_test_split
 from data_augmentation import load_images  
-import matplotlib.pyplot as plt
+from data_preprocessing import save_silhouette
 
 def label_encoder(labels):
     unique_labels = np.unique(labels)
@@ -31,9 +31,13 @@ def split_data_by_label(imgs, labels, test_size=0.2, random_st=42):
         print(f"Letra '{label}': {len(labels_test_label)} elementos prueba")
 
     return imgs_train, imgs_test, labels_train, labels_test
+def preprocess(data_dir):
+    imgs,labels=load_images(data_dir)
+    ims_s, labels_s = save_silhouette()
+    return ims_s, labels_s
 
 def process_imgs(data_dir):
-    imgs, labels = load_images(data_dir)  
+    imgs, labels = preprocess(data_dir)  
     encoded_labels, label_to_index = label_encoder(labels)  
     imgs_train, imgs_test, labels_train, labels_test = split_data_by_label(imgs, encoded_labels)
     
@@ -44,3 +48,4 @@ def process_imgs(data_dir):
 
     return imgs_train, imgs_test, labels_train, labels_test, label_to_index
 
+process_imgs(os.path.join(os.path.dirname(__file__), '..', 'Static-Hand-Gestures-of-the-Peruvian-Sign-Language-Alphabet'))

@@ -9,7 +9,7 @@ from model import ViTModel  # Importa tu modelo
 
 device = torch.device("cuda")
 def main():
-    # Cargar y procesar los datos
+    # Cargar y procesar los datosoad_images(data_dir)
     data_directory = os.path.join(os.path.dirname(__file__), '..', 'Static-Hand-Gestures-of-the-Peruvian-Sign-Language-Alphabet')
     (X_train, X_val, y_train, y_val, label_mapping) = process_imgs(data_directory)
 

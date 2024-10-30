@@ -50,7 +50,7 @@ def data_augmented(image, label, img_base_name, output_dir, target_size=(224, 22
 
     return augmented_imgs
 
-def load_images(data_dir, output_dir=os.path.join(os.path.dirname(__file__), '..', 'generated_images'), target_size=(224, 224)):
+def load_images(data_dir, output_dir=os.path.join(os.path.dirname(__file__), '..', 'augmented_images'), target_size=(224, 224)):
     images = []
     labels = []
    
