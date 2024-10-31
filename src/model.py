@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-class ViTModel(nn.Module):
+class RusticModel(nn.Module):
     def __init__(self, num_classes):
-        super(ViTModel, self).__init__()
+        super(RusticModel, self).__init__()
         self.red_conv = nn.Sequential(
             nn.Conv2d(1, 32, kernel_size=5, stride=1, padding=2),  # Capa 1
             nn.ReLU(),

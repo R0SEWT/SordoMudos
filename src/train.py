@@ -4,8 +4,9 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 from torch.optim.lr_scheduler import StepLR
+from VitModel import ViTModel
 from data_processing import process_imgs  # Asegúrate de tener esta función
-from model import ViTModel  # Importa tu modelo
+from model import RusticModel  # Importa tu modelo
 
 device = torch.device("cuda")
 
@@ -49,6 +50,7 @@ def main():
 
     # Inicializar el modelo
     num_classes = len(label_mapping)
+    #model = RusticModel(num_classes).to(device)
     model = ViTModel(num_classes).to(device)
 
     # Definir el optimizador y la función de pérdida
@@ -110,7 +112,8 @@ def main():
             break
     
     # Guardamos el modelo
-    torch.save(model.state_dict(), "el_modelinio.pth")
+    #torch.save(model.state_dict(), "el_modelinio.pth")
+    torch.save(model.state_dict(), "modelo_VIT.pth")
 
 if __name__ == "__main__":
     main()
