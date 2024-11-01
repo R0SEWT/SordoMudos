@@ -15,6 +15,7 @@ def main():
     data_directory = os.path.join(os.path.dirname(__file__), '..', 'Static-Hand-Gestures-of-the-Peruvian-Sign-Language-Alphabet')
     (X_train, X_val, y_train, y_val, label_mapping) = process_imgs(data_directory)
 
+
     # Asegúrate de que X_train y X_val sean tensores de PyTorch con la forma correcta
     X_train = torch.tensor(X_train, dtype=torch.float32)
 
@@ -59,7 +60,7 @@ def main():
     scheduler = StepLR(optimizer, step_size=5, gamma=0.1)
 
     # Entrenamiento del modelo
-    num_epochs = 30
+    num_epochs = 15
 
     for epoch in range(num_epochs):
         # Establece el modelo en modo entrenamiento

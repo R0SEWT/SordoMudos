@@ -31,11 +31,10 @@ def split_data_by_label(imgs, labels, test_size=0.2, random_st=42):
         print(f"Letra '{label}': {len(labels_test_label)} elementos prueba")
 
     return imgs_train, imgs_test, labels_train, labels_test
-def preprocess(data_dir):
+def preprocess(data_dir, for_canny=True):
     if not os.path.exists(os.path.join(os.path.dirname(__file__), '..','augmented_images')):
         load_images(data_dir)
-    ims_s, labels_s = save_silhouette()
-    return ims_s, labels_s
+    return save_silhouette(for_canny=for_canny)
 
 def process_imgs(data_dir):
     imgs, labels = preprocess(data_dir)  
