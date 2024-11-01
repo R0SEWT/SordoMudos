@@ -45,10 +45,8 @@ def predict(model, image_path):
     return predicted_class.item()
 
 # Función principal para probar el modelo 
-def test_model(image_path):
+def test_model(image_path, weights_path):
     num_classes = 24
-    #weights_path = os.path.join(os.path.dirname(__file__), 'el_modelinio.pth')
-    weights_path = os.path.join(os.path.dirname(__file__), 'modelo_VIT.pth')
     model = load_model(weights_path, num_classes)
     predicted_class = predict(model, image_path)
     return predicted_class

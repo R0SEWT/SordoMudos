@@ -82,6 +82,7 @@ def load_images(data_dir, output_dir=os.path.join(os.path.dirname(__file__), '..
 
                     images.extend(augmented_imgs)
                     labels.extend([label] * len(augmented_imgs))
+
     return images, labels
 
 

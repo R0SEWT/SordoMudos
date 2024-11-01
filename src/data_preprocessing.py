@@ -12,6 +12,8 @@ def to_silhouette(img):
 
 def binarize_with_canny(img, weak_th = None, strong_th = None): 
 	
+	if img is None:
+		raise ValueError("La imagen no puede ser None")
 	# conversion of image to grayscale 
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) 
 	
