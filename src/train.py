@@ -95,7 +95,7 @@ def main():
     scheduler = StepLR(optimizer, step_size=5, gamma=0.1)
 
     # Entrenamiento del modelo
-    num_epochs = 10
+    num_epochs = 2
     for epoch in range(num_epochs):
         model.train()  # Modo entrenamiento
         total_loss = 0

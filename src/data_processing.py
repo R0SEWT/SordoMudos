@@ -31,14 +31,16 @@ def split_data_by_label(imgs, labels, test_size=0.2, random_st=42):
         print(f"Letra '{label}': {len(labels_test_label)} elementos prueba")
 
     return imgs_train, imgs_test, labels_train, labels_test
-def preprocess(data_dir, for_canny=True):
+def preprocess(data_dir, method='canny'):
     if not os.path.exists(os.path.join(os.path.dirname(__file__), '..','augmented_images')):
         load_images(data_dir)
-    return save_silhouette(for_canny=for_canny)
+    return save_silhouette(method)
 
 def process_imgs(data_dir):
     imgs, labels = preprocess(data_dir)  
-    encoded_labels, label_to_index = label_encoder(labels)  
+    encoded_labels, label_to_index = label_encoder(labels)
+
+    
     imgs_train, imgs_test, labels_train, labels_test = split_data_by_label(imgs, encoded_labels)
     
     imgs_train = np.array(imgs_train)
