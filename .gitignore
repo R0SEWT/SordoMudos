@@ -163,6 +163,10 @@ cython_debug/
 images_processed/
 augmented_images/
 
+datasets/augmented_images/
+datasets/images_processed/
+
+
 
 
 # PyCharm

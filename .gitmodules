@@ -1,3 +1,3 @@
 [submodule "Static-Hand-Gestures-of-the-Peruvian-Sign-Language-Alphabet"]
-	path = Static-Hand-Gestures-of-the-Peruvian-Sign-Language-Alphabet
+	path = datasets/Static-Hand-Gestures-of-the-Peruvian-Sign-Language-Alphabet
 	url = https://github.com/Expo99/Static-Hand-Gestures-of-the-Peruvian-Sign-Language-Alphabet.git
