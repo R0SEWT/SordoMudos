@@ -3,20 +3,21 @@ import torch
 import time
 import logging
 from pyinstrument import Profiler
-
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 from torch.optim.lr_scheduler import StepLR
 from VitModel import ViTModel
-from data_processing import process_imgs  # Asegúrate de tener esta función
-from model import RusticModel  # Importa tu modelo
+from data_processing import process_imgs
+from model import RusticModel
 
 # Configurar el logger
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-device = torch.device("cuda")
+# Configuración del dispositivo
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+logger.info(f"Usando dispositivo: {device}")
 
 def log_time(func):
     def wrapper(*args, **kwargs):
@@ -49,7 +50,6 @@ def convert_to_tensors(X_train, X_val, y_train, y_val):
     
     return X_train, X_val, y_train, y_val
 
-@log_time
 def create_dataloaders(X_train, y_train, X_val, y_val, batch_size=32):
     train_dataset = TensorDataset(X_train, y_train)
     val_dataset = TensorDataset(X_val, y_val)
@@ -63,15 +63,18 @@ def main():
     
     total_start_time = time.time()
     
-    data_directory = os.path.join(os.path.dirname(__file__), '..', 'Static-Hand-Gestures-of-the-Peruvian-Sign-Language-Alphabet')
+    # Define el directorio de datos
+    data_directory = os.path.join(os.getcwd(), 'Static-Hand-Gestures-of-the-Peruvian-Sign-Language-Alphabet')
     X_train, X_val, y_train, y_val, label_mapping = load_and_process_data(data_directory)
     
+    # Convertir los datos a tensores
     X_train, X_val, y_train, y_val = convert_to_tensors(X_train, X_val, y_train, y_val)
     
     logger.info(f"Tamaño de conjunto de entrenamiento: {len(X_train)}")
     logger.info(f"Tamaño de conjunto de validación: {len(X_val)}")
     logger.info(f"Diccionario de etiquetas: {label_mapping}")
     
+    # Crear los DataLoaders
     train_loader, val_loader = create_dataloaders(X_train, y_train, X_val, y_val)
     
     total_end_time = time.time()
@@ -83,7 +86,8 @@ def main():
     # Inicializar el modelo
     num_classes = len(label_mapping)
     model = RusticModel(num_classes).to(device)
-    #model = ViTModel(num_classes).to(device)
+    # Alternativa de modelo:
+    # model = ViTModel(num_classes).to(device)
 
     # Definir el optimizador y la función de pérdida
     criterion = nn.CrossEntropyLoss()
@@ -92,16 +96,13 @@ def main():
 
     # Entrenamiento del modelo
     num_epochs = 10
-
     for epoch in range(num_epochs):
-        # Establece el modelo en modo entrenamiento
-        model.train()  
+        model.train()  # Modo entrenamiento
         total_loss = 0
         total_correct = 0
 
         try:
             for images, labels in train_loader:
-                # Mover datos a GPU 
                 images, labels = images.to(device), labels.to(device)
                 optimizer.zero_grad()
 
@@ -123,10 +124,9 @@ def main():
             train_accuracy = total_correct / len(train_loader.dataset)
             logger.info(f"Epoch [{epoch + 1}/{num_epochs}], Loss: {total_loss / len(train_loader):.4f}, Accuracy: {train_accuracy:.4f}")
 
-            model.eval() 
+            model.eval()
             val_loss = 0
             val_correct = 0
-
             with torch.no_grad(): 
                 for images, labels in val_loader:
                     images, labels = images.to(device), labels.to(device)
@@ -140,13 +140,13 @@ def main():
             val_accuracy = val_correct / len(val_loader.dataset)
             logger.info(f"Validation Loss: {val_loss / len(val_loader):.4f}, Validation Accuracy: {val_accuracy:.4f}")
         except Exception as e:
-            logger.info(f"Error durante el entrenamiento: {e}")
+            logger.exception(f"Error durante el entrenamiento: {e}")
             break
     
-    # Guardamos el modelo
-    torch.save(model.state_dict(), "modelo_VIT.pth")
-    logger.info("Modelo guardado exitosamente (modelo_vit)")
+    # Guardar el modelo entrenado
+    model_path = "modelo_vit.pth"
+    torch.save(model.state_dict(), model_path)
+    logger.info(f"Modelo guardado exitosamente en {model_path}")
 
 if __name__ == "__main__":
     main()
-
