@@ -63,7 +63,7 @@ def main():
     
     total_start_time = time.time()
     
-    data_directory = os.path.join(os.path.dirname(__file__), '..', 'Static-Hand-Gestures-of-the-Peruvian-Sign-Language-Alphabet')
+    data_directory = os.path.join(os.path.dirname(__file__), '..', 'captures')
     X_train, X_val, y_train, y_val, label_mapping = load_and_process_data(data_directory)
     
     X_train, X_val, y_train, y_val = convert_to_tensors(X_train, X_val, y_train, y_val)

@@ -30,14 +30,16 @@ class RusticModel(nn.Module):
         self.flatten = nn.Flatten()
         
         # Actualiza la capa fully connected con el tamaño de entrada correcto
-        self.fc1 = nn.Linear(256 * 14 * 14, 256)  # Cambia a 14x14
+        self.fc1 = nn.Linear(256 * 3 * 3, 256)  # 256*3*3 = 2304 para imágenes de 50x50
         self.dropout = nn.Dropout(0.30)
         self.fc2 = nn.Linear(256, num_classes)
     
     def forward(self, x):
         x = x / 255.0
         x = self.red_conv(x)
+        print(f"Dimensiones después de convolución: {x.shape}")  # Añade esta línea
         x = self.flatten(x)
+        print(f"Dimensiones después de flatten: {x.shape}")  # Añade esta línea
         x = F.relu(self.fc1(x))
         x = self.dropout(x)
         x = self.fc2(x)

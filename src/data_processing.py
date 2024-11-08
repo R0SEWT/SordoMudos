@@ -47,5 +47,3 @@ def process_imgs(data_dir):
     labels_test = np.array(labels_test)
 
     return imgs_train, imgs_test, labels_train, labels_test, label_to_index
-
-process_imgs(os.path.join(os.path.dirname(__file__), '..', 'Static-Hand-Gestures-of-the-Peruvian-Sign-Language-Alphabet'))

@@ -10,8 +10,8 @@ import matplotlib.pyplot as plt
 device = torch.device("cuda")
 
 def load_model(weights_path, num_classes):
-    #model = RusticModel(num_classes).to(device)
-    model = ViTModel(num_classes).to(device)
+    model = RusticModel(num_classes).to(device)
+    #model = ViTModel(num_classes).to(device)
     model.load_state_dict(torch.load(weights_path))
     model.eval()
     return model
@@ -19,7 +19,7 @@ def load_model(weights_path, num_classes):
 # Preprocesar la imagen
 def preprocesar_image(image_path):
     transform = transforms.Compose([
-        transforms.Resize((224, 224)),
+        transforms.Resize((50, 50)),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485], std=[0.229])  
     ])
@@ -46,7 +46,7 @@ def predict(model, image_path):
 
 # Función principal para probar el modelo 
 def test_model(image_path, weights_path):
-    num_classes = 24
+    num_classes = 4
     model = load_model(weights_path, num_classes)
     predicted_class = predict(model, image_path)
     return predicted_class

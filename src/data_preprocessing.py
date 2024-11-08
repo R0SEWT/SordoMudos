@@ -143,6 +143,3 @@ def save_silhouette(input_dir=os.path.join(os.path.dirname(__file__), '..', 'aug
     return images, labels
 
 
-im = cv2.imread('images/a_original.jpg')
-can = binarize_with_canny(im)
-
