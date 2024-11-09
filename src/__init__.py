@@ -24,13 +24,13 @@ def preprocesar_image(image_path):
         transforms.Normalize(mean=[0.485], std=[0.229])  
     ])
 
-    image = Image.open(image_path).convert('L')  # Convertir a escala de grises
+    image = Image.open(image_path).convert('L') 
     return image, transform(image).unsqueeze(0)  # Retornar la imagen y el tensor
 
 # Mostrar la imagen
 def mostrar_imagen(imagen):
-    plt.imshow(imagen, cmap='gray')  # Usar cmap='gray' para imágenes en escala de grises
-    plt.axis('off')  # Ocultar los ejes
+    plt.imshow(imagen, cmap='gray')
+    plt.axis('off')
     plt.show()
 
 # Ponemos la predicción

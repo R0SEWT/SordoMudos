@@ -9,8 +9,8 @@ import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 from torch.optim.lr_scheduler import StepLR
 from VitModel import ViTModel
-from data_processing import process_imgs  # Asegúrate de tener esta función
-from model import RusticModel  # Importa tu modelo
+from data_processing import process_imgs
+from model import RusticModel
 
 # Configurar el logger
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')

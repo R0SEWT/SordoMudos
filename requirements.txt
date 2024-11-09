@@ -1,5 +1,8 @@
-numpy 
-opencv-python 
-scikit-learn 
-tensorflow
-torch
+torch>=2.0.0
+torchvision>=0.15.0
+matplotlib>=3.4.0
+Pillow>=8.2.0
+pyinstrument>=4.0.0
+opencv-python>=4.5.0
+numpy>=1.21.0
+scikit-image>=0.18.0
