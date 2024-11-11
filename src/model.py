@@ -7,23 +7,27 @@ class RusticModel(nn.Module):
         super(RusticModel, self).__init__()
         self.red_conv = nn.Sequential(
             nn.Conv2d(1, 32, kernel_size=5, stride=1, padding=2),  # Capa 1
-            nn.ReLU(),
             nn.BatchNorm2d(32),
+            nn.ReLU(),
+            nn.Dropout(p=0.2), # el overfiting no nos va a ganar
             nn.MaxPool2d(kernel_size=2, stride=2),
 
             nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1),  # Capa 2
-            nn.ReLU(),
             nn.BatchNorm2d(64),
+            nn.ReLU(),
+            nn.Dropout(p=0.3), # el overfiting no nos va a ganar
             nn.MaxPool2d(kernel_size=2, stride=2),
             
             nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=1),  # Capa 3
-            nn.ReLU(),
             nn.BatchNorm2d(128),
+            nn.ReLU(),
+            nn.Dropout(p=0.4), # el overfiting no nos va a ganar
             nn.MaxPool2d(kernel_size=2, stride=2),
             
             nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=1),  # Capa 4
-            nn.ReLU(),
             nn.BatchNorm2d(256),
+            nn.ReLU(),
+            nn.Dropout(p=0.4), # el overfiting no nos va a ganar
             nn.MaxPool2d(kernel_size=2, stride=2)
         )
 
