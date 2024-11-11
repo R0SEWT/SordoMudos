@@ -19,7 +19,7 @@ def load_model(weights_path, num_classes):
 # Preprocesar la imagen
 def preprocesar_image(image_path):
     transform = transforms.Compose([
-        transforms.Resize((50, 50)),
+        transforms.Resize((128, 128)),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485], std=[0.229])  
     ])

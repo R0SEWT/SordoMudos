@@ -3,14 +3,14 @@ import cv2
 import numpy as np
 from sklearn.model_selection import train_test_split
 
-def save_image(image, label, img_name, output_dir, target_size=(50, 50)):
+def save_image(image, label, img_name, output_dir, target_size=(128, 128)):
     label_dir = os.path.join(output_dir, label)
     os.makedirs(label_dir, exist_ok=True)  
     img_path = os.path.join(label_dir, img_name)
     resized_img = cv2.resize(image, target_size)  
     cv2.imwrite(img_path, resized_img)
 
-def data_augmented(image, label, img_base_name, output_dir, target_size=(50, 50)):
+def data_augmented(image, label, img_base_name, output_dir, target_size=(128, 128)):
     def augmented_rotate(img, angle):
         h, w = image.shape[:2]
         M = cv2.getRotationMatrix2D((w // 2, h // 2), angle, 1.0)
@@ -54,7 +54,7 @@ def data_augmented(image, label, img_base_name, output_dir, target_size=(50, 50)
 
     return augmented_imgs
 
-def load_images(data_dir, output_dir=os.path.join(os.path.dirname(__file__), '..', 'augmented_images'), target_size=(50, 50)):
+def load_images(data_dir, output_dir=os.path.join(os.path.dirname(__file__), '..', 'augmented_images'), target_size=(128, 128)):
     images = []
     labels = []
    

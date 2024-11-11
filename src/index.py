@@ -6,7 +6,7 @@ from skimage import io
 from matplotlib import pyplot as plt
 
 if __name__ == '__main__':
-    image_path = r"C:\Users\joaqu\OneDrive\Escritorio\6tociclo\procesamiento_imagenes\SordoMudos\images\d_original.jpg"
+    image_path = r"C:\Users\joaqu\OneDrive\Escritorio\6tociclo\procesamiento_imagenes\SordoMudos\images\a_original.jpg"
     #image = cv2.imread(image_path)
     #image = cv2.imread(r"/home/rosewt/Documentos/codigos2024/SordoMudos/images/a_original.jpg")
     image = io.imread(image_path)
