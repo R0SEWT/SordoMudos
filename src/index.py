@@ -18,7 +18,7 @@ if __name__ == '__main__':
         print(f"La imagen no ha sido encontrada en {full_path}")
     else:
         new_img = binarize_with_canny(image)
-        save_path = os.path.join(os.path.dirname(__file__), '..', 'images', "new_image1.jpg")
+        save_path = os.path.join(os.path.dirname(__file__), '..', 'images','generated', "new_image1.jpg")
         cv2.imwrite(save_path, new_img)
         print(f"Silueta guardada en: {save_path}")
 
