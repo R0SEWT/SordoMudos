@@ -10,7 +10,7 @@ def label_encoder(labels):
     encoded_labels = np.array([label_to_index[label] for label in labels])  
     return encoded_labels, label_to_index
 
-def split_data_by_label(imgs, labels, test_size=0.2, random_st=42):
+def split_data_by_label(imgs, labels, test_size=0.3, random_st=42):
     unique_labels = np.unique(labels)
     imgs_train = []
     imgs_test = []

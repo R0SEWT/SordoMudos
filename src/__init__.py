@@ -3,15 +3,15 @@ import torch
 from torchvision import transforms
 from PIL import Image
 from model import RusticModel
-from VitModel import ViTModel
+from VitModel import ImprovedViT
 import matplotlib.pyplot as plt
 
 # Configuración de la GPU
 device = torch.device("cuda")
 
 def load_model(weights_path, num_classes):
-    model = RusticModel(num_classes).to(device)
-    #model = ViTModel(num_classes).to(device)
+    #model = RusticModel(num_classes).to(device)
+    model = ImprovedViT(num_classes).to(device)
     model.load_state_dict(torch.load(weights_path))
     model.eval()
     return model
@@ -21,7 +21,7 @@ def preprocesar_image(image_path):
     transform = transforms.Compose([
         transforms.Resize((128, 128)),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485], std=[0.229])  
+        transforms.Normalize(mean=[0.550], std=[0.104])  
     ])
 
     image = Image.open(image_path).convert('L') 
@@ -46,7 +46,7 @@ def predict(model, image_path):
 
 # Función principal para probar el modelo 
 def test_model(image_path, weights_path):
-    num_classes = 4
+    num_classes = 5
     model = load_model(weights_path, num_classes)
     predicted_class = predict(model, image_path)
     return predicted_class

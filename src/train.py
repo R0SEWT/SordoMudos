@@ -8,7 +8,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 from torch.optim.lr_scheduler import StepLR
-from VitModel import ViTModel
+#from VitModel import ViTModel
 from data_processing import process_imgs
 from model import RusticModel
 
@@ -32,20 +32,22 @@ def load_and_process_data(data_directory):
     return process_imgs(data_directory)
 
 @log_time
-def convert_to_tensors(X_train, X_val, y_train, y_val):
+def convert_to_tensors(X_train, X_val, y_train, y_val, mean=0.5501, std=0.1045):
     X_train = torch.tensor(X_train, dtype=torch.float32)
     if X_train.dim() == 3:
         X_train = X_train.unsqueeze(1)
     else:
         X_train = X_train.permute(0, 3, 1, 2)
     y_train = torch.tensor(y_train, dtype=torch.long)
-    
+    X_train = (X_train - mean) / std
     X_val = torch.tensor(X_val, dtype=torch.float32)
     if X_val.dim() == 3:
         X_val = X_val.unsqueeze(1)
     else:
         X_val = X_val.permute(0, 3, 1, 2)
     y_val = torch.tensor(y_val, dtype=torch.long)
+    
+    X_val = (X_val - mean) / std
     
     return X_train, X_val, y_train, y_val
 
@@ -87,7 +89,7 @@ def main():
 
     # Definir el optimizador y la función de pérdida
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=0.001, weight_decay=1e-4)
     scheduler = StepLR(optimizer, step_size=5, gamma=0.1)
 
     # Entrenamiento del modelo
@@ -144,9 +146,8 @@ def main():
             break
     
     # Guardamos el modelo
-    torch.save(model.state_dict(), "modelo_VIT.pth")
-    logger.info("Modelo guardado exitosamente (modelo_vit)")
+    torch.save(model.state_dict(), "modelo_cnn.pth")
+    logger.info("Modelo guardado exitosamente (modelo_cnn)")
 
 if __name__ == "__main__":
     main()
-
