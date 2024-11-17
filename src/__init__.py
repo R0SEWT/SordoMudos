@@ -2,8 +2,8 @@ import os
 import torch
 from torchvision import transforms
 from PIL import Image
-from model import RusticModel
-from VitModel import ViTModel
+from src.models.CNN.model import RusticModel
+from src.models.VIT.VitModel import ViTModel
 import matplotlib.pyplot as plt
 
 # Configuración de la GPU
