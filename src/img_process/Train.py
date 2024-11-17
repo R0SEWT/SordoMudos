@@ -11,7 +11,8 @@ imgs_train, imgs_test, labels_train, labels_test, label_to_index = process_imgs(
 
 # Convertir las imágenes a tensores de PyTorch y normalizarlas
 transform = transforms.Compose([
-    transforms.ToTensor()
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.5501], std=[0.1045])
 ])
 
 # Si las imágenes no están en formato tensor, convertirlas aquí
