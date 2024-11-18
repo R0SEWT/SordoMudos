@@ -3,11 +3,12 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import logging
 from PIL import Image
+import sys
 
-
-import s_preprocessing as s_preprocessing
-from data_augmentation import load_images
-from s_preprocessing import save_silhouette
+sys.path.append('/home/rosewt/Documentos/codigos2024/SordoMudos/')
+import src.preprocessing.data_preprocessing as data_preprocessing
+from src.preprocessing.data_augmentation import load_images
+from src.preprocessing.data_preprocessing import save_silhouette
 
 
 
@@ -73,7 +74,7 @@ def split_data_by_label(imgs, labels, test_size=0.2, val_size=0.2, random_st=42,
         raise
 
 
-def save_split_data(imgs_train, imgs_test, labels_train, labels_test, imgs_val, labels_val, output_dir='split_data'):
+def save_split_data(imgs_train, imgs_test, labels_train, labels_test, imgs_val, labels_val, label_to_index, output_dir='split_data'):
     try:
         splits = {
             'train': (imgs_train, labels_train),
@@ -87,14 +88,19 @@ def save_split_data(imgs_train, imgs_test, labels_train, labels_test, imgs_val, 
             
             for idx, (img, label) in enumerate(zip(images, labels)):
                 img_path = os.path.join(split_dir, f'{split_name}_{label}_{idx}.jpg')  # Mantener .jpg
-                # aqui se guarddaban con ipy
                 image = Image.fromarray((img * 255).astype(np.uint8))  # Ajustar según la escala de tus datos
                 image.save(img_path)  # Guarda como .jpg
             
         logging.info(f"Datos guardados exitosamente en {output_dir}")
+
+        # guardar el diccionario de codificación de etiquetas
+        label_to_index_path = os.path.join(output_dir, 'label_to_index.npy')
+        np.save(label_to_index_path, label_to_index)
+        logging.info(f"Diccionario de codificación de etiquetas guardado en {label_to_index_path}")
+
         return True
     except Exception as e:
-        logging.error(f"Error al guardar los datos divididos: {e}")
+        logging.error(f"Error al guardar los datos divididos o diccionario: {e}")
         raise
 
 def preprocess(data_dir, method='canny', output_dir='augmented_images'):
@@ -124,7 +130,7 @@ def process_imgs(data_dir, method='canny', data_output = 'split_data'):
         encoded_labels, label_to_index = label_encoder(labels)  
         imgs_train, imgs_test, labels_train, labels_test, imgs_val, labels_val = split_data_by_label(imgs, encoded_labels)
         
-        save_split_data(imgs_train, imgs_test, labels_train, labels_test, imgs_val, labels_val, output_dir=data_output)
+        save_split_data(imgs_train, imgs_test, labels_train, labels_test, imgs_val, labels_val, label_to_index , output_dir=data_output)
 
 
         imgs_train = np.array(imgs_train)
@@ -139,5 +145,36 @@ def process_imgs(data_dir, method='canny', data_output = 'split_data'):
         raise
 
 
+
+
+def load_data(data_dir):
+
+    """
+    Carga datos preprocesados y divididos en conjuntos de entrenamiento, validación y prueba.
+    """
+    #directorio actual
+    try:
+        splits = ['train', 'test', 'val']
+        data = {}
+        for split in splits:
+            split_dir = os.path.join(data_dir, split)
+            imgs, labels = [], []
+            for img_file in os.listdir(split_dir):
+                img_path = os.path.join(split_dir, img_file)
+                img = Image.open(img_path)
+                imgs.append(img)
+                label = img_file.split('_')[1]  # Extraer la etiqueta del nombre del archivo
+                labels.append(label)
+                
+            data[split] = (np.array(imgs), np.array(labels))
+
+        # Cargar el diccionario de codificación de etiquetas
+        label_to_index = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7, 'i': 8, 'k': 9, 'l': 10, 'm': 11, 'n': 12, 'o': 13, 'p': 14, 'q': 15, 'r': 16, 's': 17, 't': 18, 'u': 19, 'v': 20, 'w': 21, 'x': 22, 'y': 23}
+
+        logging.info("Datos cargados con éxito.")
+        return data['train'], data['test'], data['val'], label_to_index
+    except Exception as e:
+        logging.error(f"Error al cargar los datos: {e}")
+        raise
 
 
