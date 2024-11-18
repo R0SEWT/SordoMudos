@@ -41,6 +41,7 @@ def print_label_distribution(labels):
     for label, count in zip(unique_labels, counts):
         print(f"Etiqueta '{label}': {count} imagenes")
 
+
 def process_imgs():
     # Procesa las imágenes y las etiquetas
     imgs, labels = img_canny(os.path.join(os.path.dirname(__file__), '..', '..', 'captures'))  

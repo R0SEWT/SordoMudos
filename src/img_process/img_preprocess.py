@@ -103,7 +103,7 @@ def img_canny(input_dir):
             if file.lower().endswith(('.png', '.jpg', '.jpeg')):
                 img_path = os.path.join(root, file)
                 img = cv2.imread(img_path)
-                img = cv2.resize(img, (128, 128))  # Redimensiona las imágenes
+                img = cv2.resize(img, (128, 128)) 
                 # Aplicar el algoritmo de Canny para obtener la silueta de la imagen
                 silhouette = binarize_with_canny(img)
 
